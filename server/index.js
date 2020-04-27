@@ -3,6 +3,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const fs = require('fs');
 
 // Create a new instance of express
 const app = express()
@@ -18,7 +19,14 @@ app.get('/', function (req, res) {
 
 // Route that receives a POST request to /sms
 app.post('/data', function (req, res) {
+  console.log(req.body.image);
   const image = req.body.image;
+
+  fs.writeFile('image.txt', req.body.image, function (err) {
+    if (err) return console.log(err);
+    console.log('Written');
+  });
+
   var secret_key = "sk_DEMODEMODEMODEMODEMODEMO";
   var url = "https://api.openalpr.com/v2/recognize_bytes?recognize_vehicle=1&country=us&secret_key=" + secret_key;
   var xhr = new XMLHttpRequest();
